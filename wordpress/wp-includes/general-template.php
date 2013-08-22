@@ -35,6 +35,7 @@ function get_header( $name = null ) {
 		load_template( ABSPATH . WPINC . '/theme-compat/header.php');
 }
 
+
 /**
  * Load footer template.
  *

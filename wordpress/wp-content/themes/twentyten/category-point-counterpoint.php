@@ -7,7 +7,7 @@
  * @since Twenty Ten 1.0
  */
 
-get_header(); ?>
+get_header('point-counterpoint'); ?>
 
 		<div id="container">
 			<div id="content" role="main">
@@ -24,7 +24,7 @@ get_header(); ?>
 				 * If you want to overload this in a child theme then include a file
 				 * called loop-category.php and that will be used instead.
 				 */
-				get_template_part( 'loop', 'category' );
+				get_template_part( 'loop', 'point-counterpoint' );
 				?>
 
 			</div><!-- #content -->

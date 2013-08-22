@@ -6,7 +6,21 @@
  * @subpackage Twenty_Ten
  * @since Twenty Ten 1.0
  */
-
+$cat=$_GET['cat'];
+if($cat==608)			/*freeze frame*/
+{
+include('category-freeze-frame.php');
+}
+else if($cat==612)		/*PCP*/
+{
+include('category-point-counterpoint.php');
+}
+else if($cat==724)		/*PCP conv*/
+{
+include('category-point-counterpoint-conv.php');
+}
+else
+{
 get_header(); ?>
 
 		<div id="container">
@@ -32,3 +46,4 @@ get_header(); ?>
 
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>
+<?php } ?>

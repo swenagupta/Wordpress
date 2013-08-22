@@ -18,7 +18,7 @@
  * @since Twenty Ten 1.0
  */
 ?>
-
+<?php	get_the_term_list($post->ID,'Edition','','','') ?>
 <?php /* Display navigation to next/previous pages when applicable */ ?>
 <?php if ( $wp_query->max_num_pages > 1 ) : ?>
 	
@@ -126,8 +126,8 @@
 	<?php else : ?>
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
         
-			<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php echo esc_attr( sprintf( __( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ) ); ?>" rel="bookmark"><?php if (strlen($post->post_title) > 17) {
-echo substr(the_title($before = '', $after = '', FALSE), 0, 17) . '...'; } else { /*nitish title trim*/
+			<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php echo esc_attr( sprintf( __( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ) ); ?>" rel="bookmark"><?php if (strlen($post->post_title) > 10) {
+echo substr(the_title($before = '', $after = '', FALSE), 0, 13) . '...'; } else { /*nitish title trim*/
 the_title();
 } ?></a></h2>
 

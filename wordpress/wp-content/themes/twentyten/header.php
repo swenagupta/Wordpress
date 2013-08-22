@@ -12,6 +12,7 @@
 <html <?php language_attributes(); ?>>
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
+
 <title><?php
 	/*
 	 * Print the <title> tag based on what is being viewed.
@@ -36,6 +37,7 @@
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
+
 <?php
 	/* We add some JavaScript to pages with the comment form
 	 * to support sites with threaded comments (when in use).
@@ -50,11 +52,14 @@
 	 */
 	wp_head();
 ?>
+
 </head>
 
-<body <?php body_class(); ?>>
+<body <?php body_class(); ?> <?php do_action('wp_menubar','menu'); ?>>
+    
 <div id="wrapper" class="hfeed">
 	<div id="header">
+
 		<div id="masthead">
 			<div id="branding" role="banner">
 				<?php $heading_tag = ( is_home() || is_front_page() ) ? 'h1' : 'div'; ?>

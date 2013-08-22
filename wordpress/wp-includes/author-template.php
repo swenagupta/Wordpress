@@ -390,3 +390,20 @@ function __clear_multi_author_cache() {
 	wp_cache_delete('is_multi_author', 'posts');
 }
 add_action('transition_post_status', '__clear_multi_author_cache');
+
+/***
+Custom function to change url for author
+*/
+
+function get_author_posts_url1($author_id, $author_nicename = '') {
+
+	$auth_ID = (int) $author_id;
+
+
+		$file = home_url( '/' );
+		$link = $file . '?author=' . $auth_ID;
+
+
+	return $link;
+}
+

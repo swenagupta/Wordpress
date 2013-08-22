@@ -44,6 +44,47 @@
  * Used to set the width of images and content. Should be equal to the width the theme
  * is designed for, generally via the style.css stylesheet.
  */
+function comment_author_profile_link(){
+
+/* Get the comment author information */
+
+global $comment;
+$comment_ID = $comment->user_id;
+$author = get_comment_author( $comment_ID );
+$url = get_comment_author_url( $comment_ID );
+
+/* Check if commenter is registered or not */
+
+    /* Registered Commenter */      
+
+    $registeredID = get_userdata($comment_ID);
+    $authorName = $registeredID->display_name;
+    $authorLevel = $registeredID->user_level;
+    $authorURL = $registeredID->user_url;
+    $authorID = $registeredID->ID;
+
+        /* Check if they have edit posts capabilities & is author or higher */
+
+/*    if ($authorLevel > 1 && user_can($authorID,'edit_posts') == true && count_user_posts($authorID) > 0) {*/
+    /* Author+ with Posts */
+
+    $return = '<a href="'.home_url().'/?author='.$authorID.'">'.$authorName.'</a>';
+
+/*    } else {
+   Below Author 
+    if ( empty( $authorURL ) || 'http://' == $authorURL )
+        $return = $authorName;
+    else
+        $return = "<a href='$authorURL' rel='external nofollow' class='url' target='_blank'>$authorName</a>";
+
+    }
+
+*/
+
+return $return;
+}
+
+add_filter('get_comment_author_link', 'comment_author_profile_link');
 if ( ! isset( $content_width ) )
 	$content_width = 640;
 
@@ -537,19 +578,54 @@ if ( ! function_exists( 'twentyten_posted_on' ) ) :
  * @since Twenty Ten 1.0
  */
 function twentyten_posted_on() {
-	printf( __( '<span class="%1$s">Posted on</span> %2$s <span class="meta-sep">by</span> %3$s', 'twentyten' ),
-		'meta-prep meta-prep-author',
-		sprintf( '<a href="%1$s" title="%2$s" rel="bookmark"><span class="entry-date">%3$s</span></a>',
-			get_permalink(),
-			esc_attr( get_the_time() ),
-			get_the_date()
-		),
+if(get_the_tags()!='')
+	{
+	 the_terms( $post->ID, 'edition', '<i>Section: </i>', ', ', ' ' );
+	printf( __( '<span class="%1$s">,</span>%2$s | Tagged: %3$s | ', 'twentyten' ),
+	'meta-prep meta-prep-author',
+	get_the_category_list( ', ' ),
 		sprintf( '<span class="author vcard"><a class="url fn n" href="%1$s" title="%2$s">%3$s</a></span>',
 			get_author_posts_url( get_the_author_meta( 'ID' ) ),
-			esc_attr( sprintf( __( 'View all posts by %s', 'twentyten' ), get_the_author() ) ),
-			get_the_author()
+			esc_attr( sprintf( __( 'View all posts in %s', 'twentyten' ), get_the_tag_list() ) ),
+			get_the_tag_list('',', ')
 		)
 	);
+	/*Function coauthors_posts_links() called for displaying author name using plugin coauthors plus*/
+
+	echo 'Author: '; 
+	if ( function_exists( 'coauthors_posts_links' ) )
+	coauthors_posts_links();
+	else
+	the_author();
+
+	}
+	else if(get_the_category_list( ', ' )=='' && the_terms( $post->ID, 'edition', '', ', ', ' ' )=='')
+	{
+		echo 'Author: '; 
+	if ( function_exists( 'coauthors_posts_links' ) )
+	coauthors_posts_links();
+	else
+	the_author();
+	}
+	else
+	{
+	 the_terms( $post->ID, 'edition', '<i>Section: </i>', ', ', ' ' );
+		printf( __( '<span class="%1$s">,</span>%2$s | ', 'twentyten' ),
+	'meta-prep meta-prep-author',
+	get_the_category_list( ', ' )
+	);
+
+	/*Function coauthors_posts_links() called for displaying author name using plugin coauthors plus*/
+
+	echo 'Author: '; 
+	if ( function_exists( 'coauthors_posts_links' ) )
+	coauthors_posts_links();
+	else
+	the_author();
+	}
+		
+	/*}*/
+	
 }
 endif;
 
@@ -579,3 +655,23 @@ function twentyten_posted_in() {
 	);
 }
 endif;
+function get_tag_id_by_name($tag_name) {
+	global $wpdb;
+	$tag_ID = $wpdb->get_var("SELECT * FROM ".$wpdb->terms." WHERE  `name` =  '".$tag_name."'");
+	
+	return $tag_ID;
+}
+/***************************Registration using webmail id only*************/
+
+add_action('registration_errors', 'sizeable_restrict_domains', 10, 3);
+function sizeable_restrict_domains( $errors, $login, $email ) {
+$whitelist = array('daiict.ac.in');
+if ( is_email($email) ) {
+$parts = explode('@', $email);
+$domain = $parts[count($parts)-1];
+if ( !in_array(strtolower($domain), $whitelist) ) {
+$errors->add('email_domain', __('<b>ERROR</b>: You may only register with your DA-IICT email address.'));
+}
+}
+return $errors;
+}
